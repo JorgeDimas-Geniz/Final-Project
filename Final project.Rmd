@@ -18,3 +18,81 @@ ggplot(mtss, aes(TotalStress,Amygdala )) + geom_point()+ geom_smooth()
 ggplot(mtss, aes(TotalStress,Thalamus )) + geom_point()+ geom_smooth()
 
 ```
+```{r}
+finalProjDat<-read.csv("C:/Users/Chris/Downloads/PSY 4960 Programming in R/Final Project/mtss.csv")
+```
+```{r}
+finalProjDat$Stress<- finalProjDat$TotalStress
+finalProjDat$AmygdalaVolume<- finalProjDat$Amygdala
+finalProjDat$HippocampusVolume<- finalProjDat$Hippocampus
+ThalamusVolume<- function(rThal,lThal){#combining the two thalamus volumes to make a total volume
+  rThal + lThal
+}
+finalProjDat$ThalamusVolume<- ThalamusVolume(finalProjDat$RightThalamusProper,finalProjDat$LeftThalamusProper)
+finalProjDat$Abuse<- finalProjDat$ANY_ABUSE_CHILD_DV
+class(finalProjDat$Abuse)#integer, need to be a factor in order to relevel into yes and no
+finalProjDat$Abuse<- as.factor(finalProjDat$Abuse)
+levels(finalProjDat$Abuse)#0 is the first level, 1 is the second
+levels(finalProjDat$Abuse)<- c("no","yes")
+finalProjDat$Abuse#I am unsure how to incorporate abuse into stress. We know from studies that abuse affects stress levels, but how to quantify that into the current measure of stress is where the problem lies for me. 
+```
+
+```{r}
+#here are the graphs
+library(ggplot2)
+ggplot(finalProjDat, aes(Stress,ThalamusVolume)) +geom_point(color = "darkorange") + geom_smooth(method = "lm", color = "darkblue", se = FALSE) + theme_bw() + ylab("Thalamus Volume")
+ggplot(finalProjDat, aes(Stress,AmygdalaVolume)) + geom_point(color = "blue") + geom_smooth(method = "lm", color = "bisque4", se = FALSE) + theme_bw() + ylab("Amygdala Volume")
+ggplot(finalProjDat, aes(Stress,HippocampusVolume)) + geom_point(color = "darkmagenta") + geom_smooth(method = "lm", color = "darkslategray", se = FALSE) + theme_bw + ylab("Hippocamus Volume")
+```
+
+```{r}
+library(ltm)
+biserial.cor(finalProjDat$Stress,finalProjDat$Abuse)#the correlation in this data between stress and abuse is -.533. It may be better off to not include the abuse variable to keep things simple
+```
+
+```{r}
+#now to do the analyses
+cor.test(finalProjDat$Stress,finalProjDat$ThalamusVolume,alternative = "less")
+#Pearson's product-moment correlation
+
+#data:  finalProjDat$Stress and finalProjDat$ThalamusVolume
+#t = -0.95809, df = 147, p-value = 0.1698
+#alternative hypothesis: true correlation is less than 0
+#95 percent confidence interval:
+# -1.00000000  0.05712717
+#sample estimates:
+#        cor 
+#-0.07877605 
+
+#this is not a significant negative correlation
+```
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$AmygdalaVolume,alternative = "less")
+#Pearson's product-moment correlation
+
+#data:  finalProjDat$Stress and finalProjDat$AmygdalaVolume
+#t = -1.2538, df = 147, p-value = 0.106
+#alternative hypothesis: true correlation is less than 0
+#95 percent confidence interval:
+# -1.00000000  0.03288975
+#sample estimates:
+#       cor 
+#-0.1028623 
+
+#this is not a significant negative correlation
+```
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$HippocampusVolume,alternative = "less")
+#Pearson's product-moment correlation
+
+#data:  finalProjDat$Stress and finalProjDat$HippocampusVolume
+#t = -0.90187, df = 147, p-value = 0.1843
+#alternative hypothesis: true correlation is less than 0
+#95 percent confidence interval:
+# -1.00000000  0.06173368
+#sample estimates:
+#        cor 
+#-0.07418026 
+
+#this is not a significant negative correlation
+```
