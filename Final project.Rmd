@@ -1,0 +1,20 @@
+---
+title: "Data analysis final project"
+author: "Jorge Dimas-Geniz"
+date: "2022-11-22"
+output: html_document
+---
+```{r}
+ggplot(mtss, aes(TotalStress,Hippocampus )) + geom_point()+ geom_smooth()
+
+```
+
+```{r}
+ggplot(mtss, aes(TotalStress,Amygdala )) + geom_point()+ geom_smooth()
+
+```
+
+```{r}
+ggplot(mtss, aes(TotalStress,Thalamus )) + geom_point()+ geom_smooth()
+
+```
