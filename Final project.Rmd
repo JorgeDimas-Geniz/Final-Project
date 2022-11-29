@@ -4,23 +4,20 @@ author: "Jorge Dimas-Geniz"
 date: "2022-11-22"
 output: html_document
 ---
-```{r}
-ggplot(mtss, aes(TotalStress,Hippocampus )) + geom_point()+ geom_smooth()
 
-```
+#This is based on a paper that measures the volumes of the hippocamus, amygdala, and thalamus. Stress was also measured and correlated in this study.
+#Research Question: How does stress and abuse have an effect on neural development of children?
 
-```{r}
-ggplot(mtss, aes(TotalStress,Amygdala )) + geom_point()+ geom_smooth()
+#Our dataset is from an already published paper. We are using the data to explore the correlations between children/adolescent stress level and hippocampus, amygdala, and thalamus size. 
 
-```
-
-```{r}
-ggplot(mtss, aes(TotalStress,Thalamus )) + geom_point()+ geom_smooth()
-
-```
 ```{r}
 finalProjDat<-read.csv("C:/Users/Chris/Downloads/PSY 4960 Programming in R/Final Project/mtss.csv")
 ```
+#dataset manipulation.
+#First, we created new columns for stress, amygdala volume, and total thalamus volume. This helps when setting up the graphs and statistical analyses later. 
+#Stress was measured using UCLA Life Stress Interview (Hammen, 1988). Both parents and kids were interviewed and the higher of the two were included in the data with scores ranging from 0-45.
+#Hippocampal and amygdala volume were measured in mm^3 x 10^3
+#All three brain parts were measured using structural MRI.
 ```{r}
 finalProjDat$Stress<- finalProjDat$TotalStress
 finalProjDat$AmygdalaVolume<- finalProjDat$Amygdala
