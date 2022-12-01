@@ -1,0 +1,99 @@
+---
+title: 'fianl Project update #2'
+author: "Jorge Dimas-Geniz"
+date: "2022-12-01"
+output: html_document
+---
+title: "Data analysis final project"
+author: "Jorge Dimas-Geniz"
+date: "2022-11-22"
+output: html_document
+---
+
+#This is based on a paper that measures the volumes of the hippocamus, amygdala, and thalamus. Stress was also measured and correlated in this study.
+#Research Question: How does stress and abuse have an effect on neural development of children?
+```{r}
+library(ggplot2)
+library(ltm)
+library(tidyverse)
+```
+
+```{r}
+#Our dataset is from an already published paper. We are using the data to explore the correlations between children/adolescent stress level and hippocampus, amygdala, and thalamus size. 
+finalProjDat<- read_csv("C:/Users/Jorge/Downloads/mtss (1).csv")
+```
+#Dataset Manipulation
+```{r}
+#First, we created new columns for stress, amygdala volume, and total thalamus volume. This helps when setting up the graphs and statistical analyses later. 
+#Stress was measured using UCLA Life Stress Interview (Hammen, 1988). Both parents and kids were interviewed and the higher of the two were included in the data with scores ranging from 0-45.
+#Hippocampal and amygdala volume were measured in mm^3 x 10^3. No measurement was indicated for the thalamus, but it was assumed to be the same measurement. 
+#All three brain parts were measured using structural MRI.
+finalProjDat$Stress<- finalProjDat$TotalStress
+finalProjDat$AmygdalaVolume<- finalProjDat$Amygdala
+finalProjDat$HippocampusVolume<- finalProjDat$Hippocampus
+ThalamusVolume<- function(rThal,lThal){rThal + lThal}
+#combining the two thalamus volumes to make a total volume
+finalProjDat$ThalamusVolume<-ThalamusVolume(finalProjDat$RightThalamusProper,finalProjDat$LeftThalamusProper)
+```
+
+#Research Question 1: How does different levels of stress effect the neurological growth development of the hippocampi of children?
+
+#Null Hypothesis 1: There will be no substantial difference in the size of hippocampi of children caused by different levels of stress.
+
+#Alternative Hypothesis 1: Increased levels of stress in young children leads to lesser size hippocampi in children, in comparison to their peers who experience normal levels of stress.
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$HippocampusVolume,alternative = "less")
+#this is not a significant negative correlation
+ggplot(finalProjDat, aes(Stress,HippocampusVolume)) + geom_point(color = "darkmagenta") + geom_smooth(method = "lm", color = "darkslategray", se = FALSE) + theme_bw() + ylab("Hippocamus Volume") + ggtitle("Hippocampal Volume and Stress") + theme(plot.title = element_text(size=20))
+```
+#Analysis 1
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$HippocampusVolume,alternative = "less")
+#Correlation of -.07
+#p-value of .1843
+#Nonsignificant p-value
+
+
+```
+## We fail to reject our null hypothesis: p-value(.1843)> (.05)
+
+#Research question 2:  How does different levels of stress effect the neurological growth development of the amydala of children?
+
+#Null Hypothese 2: There will be no substantial difference in the size of Amydalae of children caused by different levels of stress.
+
+#Alternative Hypothesis 2: Increased levels of stress in young children leads to lesser size amygdalae in children, in comparison to their peers who experience normal levels of stress.
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$AmygdalaVolume,alternative = "less")
+#this is not a significant negative correlation
+ggplot(finalProjDat, aes(Stress,AmygdalaVolume)) + geom_point(color = "blue") + geom_smooth(method = "lm", color = "bisque4", se = FALSE) + theme_bw() + ylab("Amygdala Volume") + ggtitle("Amygdala volume compared to stress") + theme(plot.title = element_text(size=20))
+```
+#Analysis 2
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$AmygdalaVolume,alternative = "less")
+#Correlation of -.102
+#p-value of .106
+#Nonsignificant p-value
+
+```
+## We fail to reject our null hypothesis: p-value(.1843)> (.05)
+
+#Research question 3:  How does different levels of stress effect the neurological growth development of the Thalamus of children?
+
+#Null Hypothese 2: There will be no substantial difference in the size of Thalami of children caused by different levels of stress.
+
+#Hypothesis 3: Increased levels of stress in young children leads to lesser size thalami in children, in comparison to their peers who experience normal levels of stress.
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$ThalamusVolume,alternative = "less")
+#this is not a significant negative correlation
+ggplot(finalProjDat, aes(Stress,ThalamusVolume)) +geom_point(color = "darkorange") + geom_smooth(method = "lm", color = "darkblue", se = FALSE) + theme_bw() + ylab("Thalamus Volume") + ggtitle("Thalamus volume compared to stress")+theme(plot.title = element_text(size=20))
+
+```
+#Analysis 3
+```{r}
+cor.test(finalProjDat$Stress,finalProjDat$ThalamusVolume,alternative = "less")
+#Correlation of -.1698
+#p-value of .-07
+#Nonsignificant p-value
+
+```
+## We fail to reject our null hypothesis: p-value(-.07)> (-.05)
