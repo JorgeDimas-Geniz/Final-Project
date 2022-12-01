@@ -9,15 +9,7 @@ author: "Jorge Dimas-Geniz"
 date: "2022-11-22"
 output: html_document
 ---
-```{r}
-ggplot(mtss, aes(TotalStress,Hippocampus )) + geom_point()+ geom_smooth()
-```
-```{r}
-ggplot(mtss, aes(TotalStress,Amygdala )) + geom_point()+ geom_smooth()
-```
-```{r}
-ggplot(mtss, aes(TotalStress,Thalamus )) + geom_point()+ geom_smooth()
-```
+
 #This is based on a paper that measures the volumes of the hippocamus, amygdala, and thalamus. Stress was also measured and correlated in this study.
 #Research Question: How does stress and abuse have an effect on neural development of children?
 ```{r}
@@ -27,7 +19,7 @@ library(ltm)
 
 ```{r}
 #Our dataset is from an already published paper. We are using the data to explore the correlations between children/adolescent stress level and hippocampus, amygdala, and thalamus size. 
-finalProjDat<-mtss <- read_excel("C:/Users/Jorge/Downloads/mtss.xlsx")
+finalProjDat<-read.csv("C:/Users/Jorge/Downloads/mtss (1).csv", header=FALSE)
 ```
 #Dataset Manipulation
 ```{r}
@@ -43,19 +35,7 @@ ThalamusVolume<- function(rThal,lThal){#combining the two thalamus volumes to ma
 }
 finalProjDat$ThalamusVolume<- ThalamusVolume(finalProjDat$RightThalamusProper,finalProjDat$LeftThalamusProper)
 ```
-#work on abuse on thursday
-```{r}
-finalProjDat$Abuse<- finalProjDat$ANY_ABUSE_CHILD_DV
-class(finalProjDat$Abuse)#integer, need to be a factor in order to relevel into yes and no
-finalProjDat$Abuse<- as.factor(finalProjDat$Abuse)
-levels(finalProjDat$Abuse)#0 is the first level, 1 is the second
-levels(finalProjDat$Abuse)<- c("no","yes")
-finalProjDat$Abuse#I am unsure how to incorporate abuse into stress. We know from studies that abuse affects stress levels, but how to quantify that into the current measure of stress is where the problem lies for me. 
-```
 
-```{r}
-biserial.cor(finalProjDat$Stress,finalProjDat$Abuse)#the correlation in this data between stress and abuse is -.533. It may be better off to not include the abuse variable to keep things simple
-```
 #Research Question 1: How does different levels of stress effect the neurological growth development of the hippocampi of children?
 
 #Null Hypothesis 1: There will be no substantial difference in the size of hippocampi of children caused by different levels of stress.
@@ -119,14 +99,3 @@ lmThala<- lm(ThalamusVolume~Stress, data = finalProjDat)
 summary(lmThala)
 ```
 # We fail to reject our null hypothesis: p-value(-.07)> (-.05)
-```{r}
-#possible new statistical analysis
-summary(lm(volume~stress*abuse,data = finalProjDat))
-```{r}
-lmHippo<- lm(HippocampusVolume~Stress*Abuse, data = finalProjDat)
-summary(lmHippo)
-#do this for all 3 brain parts
-lmAmygd<- lm(AmygdalaVolume~Stress*Abuse, data = finalProjDat)
-summary(lmAmygd)
-lmThala<- lm(ThalamusVolume~Stress, data = finalProjDat)
-summary(lmThala)
