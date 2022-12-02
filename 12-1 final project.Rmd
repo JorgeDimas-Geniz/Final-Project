@@ -1,8 +1,10 @@
 ---
-title: 'fianl Project update #2'
+title: 'Final Project update #2'
 author: "Jorge Dimas-Geniz"
 date: "2022-12-01"
-output: html_document
+output:
+  pdf_document: default
+  html_document: default
 ---
 title: "Data analysis final project"
 author: "Jorge Dimas-Geniz"
@@ -75,11 +77,11 @@ cor.test(finalProjDat$Stress,finalProjDat$AmygdalaVolume,alternative = "less")
 #Nonsignificant p-value
 
 ```
-## We fail to reject our null hypothesis: p-value(.1843)> (.05)
+## We fail to reject our null hypothesis: p-value(.106)> (.05)
 
 #Research question 3:  How does different levels of stress effect the neurological growth development of the Thalamus of children?
 
-#Null Hypothese 2: There will be no substantial difference in the size of Thalami of children caused by different levels of stress.
+#Null Hypothese 3: There will be no substantial difference in the size of Thalami of children caused by different levels of stress.
 
 #Hypothesis 3: Increased levels of stress in young children leads to lesser size thalami in children, in comparison to their peers who experience normal levels of stress.
 ```{r}
@@ -91,9 +93,9 @@ ggplot(finalProjDat, aes(Stress,ThalamusVolume)) +geom_point(color = "darkorange
 #Analysis 3
 ```{r}
 cor.test(finalProjDat$Stress,finalProjDat$ThalamusVolume,alternative = "less")
-#Correlation of -.1698
-#p-value of .-07
+#Correlation of -.078
+#p-value of .1698
 #Nonsignificant p-value
 
 ```
-## We fail to reject our null hypothesis: p-value(-.07)> (-.05)
+## We fail to reject our null hypothesis: p-value(.168) > (.05)
